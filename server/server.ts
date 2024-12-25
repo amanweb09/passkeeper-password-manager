@@ -5,9 +5,17 @@ import express from "express"
 import router from "./router"
 import dataManager from "./managers/data-manager"
 import cookieParser from "cookie-parser"
+import cors from "cors"
+
 const app = express()
 
 dataManager.connection()
+
+const corsOptions:cors.CorsOptions = {
+    origin: ["http://localhost:5713"],
+    credentials: true
+}
+app.use(cors(corsOptions))
 
 app.use(express.json())
 app.use(cookieParser())
