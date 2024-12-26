@@ -8,6 +8,6 @@ const api = axios.create({
 })
 
 export const signup = async (data: BaseUser) => await api.post("/api/signup", data)
-export const login = async (data:BaseUser) => await api.post("/api/login", data)
+export const login = async (data:BaseUser) => await api.post("/api/signin", data)
 
 export default api

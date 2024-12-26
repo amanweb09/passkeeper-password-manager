@@ -5,6 +5,7 @@ import { signup } from "../api"
 import { useDispatch } from "react-redux"
 import { modifyUser } from "../store/auth-slice"
 import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 
 const Signup = () => {
 
@@ -30,10 +31,12 @@ const Signup = () => {
         try {
             const { data } = await signup(userDetails)
             dispatch(modifyUser({ isAuth: true, user: data.user }))
-            alert("signup successful!")
-        } catch (error) {
+            toast.success("Signup successful!")
+            return navigate("/")
+        } catch (error:any) {
             console.log(error);
-            alert("could not signup")
+            const MESSAGE = error.response.data.message || "Error while signing in"
+            toast.error(MESSAGE)
         }
     }
 
@@ -121,9 +124,9 @@ const Signup = () => {
 
                     <p className="mt-10 text-center text-sm/6 text-gray-500">
                         Already have an account?{' '}
-                        <p onClick={() => navigate("/login")} className="font-semibold cursor-pointer text-sky-600 hover:text-sky-500">
+                        <span onClick={() => navigate("/login")} className="font-semibold cursor-pointer text-sky-600 hover:text-sky-500">
                             Login
-                        </p>
+                        </span>
                     </p>
                 </div>
             </div>

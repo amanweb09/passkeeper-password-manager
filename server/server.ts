@@ -12,7 +12,7 @@ const app = express()
 dataManager.connection()
 
 const corsOptions:cors.CorsOptions = {
-    origin: ["http://localhost:5713"],
+    origin: ["http://localhost:5173"],
     credentials: true
 }
 app.use(cors(corsOptions))

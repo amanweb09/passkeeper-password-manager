@@ -3,7 +3,7 @@ import dataManager from "./data-manager";
 import hashingManager from "./hashing-manager";
 import jwt from "jsonwebtoken"
 
-class AuthManager {
+export class AuthManager {
 
     async signup(req: Request, res: Response) {
 

@@ -1,10 +1,10 @@
 import { useState } from "react"
 import Nav from "../components/nav"
-// import { type BaseUser } from "../types"
 import { login } from "../api"
 import { useDispatch } from "react-redux"
 import { modifyUser } from "../store/auth-slice"
 import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 
 const Login = () => {
 
@@ -30,10 +30,12 @@ const Login = () => {
         try {
             const { data } = await login(userDetails)
             dispatch(modifyUser({ isAuth: true, user: data.user }))
-            alert("login successful!")
-        } catch (error) {
+            toast.success("Login successful!")
+            return navigate("/")
+        } catch (error:any) {
             console.log(error);
-            alert("could not login")
+            const MESSAGE = error.response.data.message || "Error while signing in"
+            toast.error(MESSAGE)
         }
     }
 
@@ -109,9 +111,9 @@ const Login = () => {
 
                     <p className="mt-10 text-center text-sm/6 text-gray-500">
                         Don't have an account?{' '}
-                        <p onClick={() => navigate("/signup")} className="font-semibold cursor-pointer text-sky-600 hover:text-sky-500">
+                        <span onClick={() => navigate("/signup")} className="font-semibold cursor-pointer text-sky-600 hover:text-sky-500">
                             Signup
-                        </p>
+                        </span>
                     </p>
                 </div>
             </div>

@@ -7,3 +7,7 @@ export interface User {
 export interface MongoUser extends User {
     _id: string
 }
+
+export interface JWTPayload {
+    _id: string
+}
