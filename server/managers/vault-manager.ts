@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import dataManager from "./data-manager";
 import hashingManager from "./hashing-manager";
+import { v4 as uuidv4 } from "uuid"
 
 class VaultManager {
 
@@ -9,24 +10,12 @@ class VaultManager {
 
         if (!credentials || !masterPassword) return res.status(400).json({ message: "Please provide all required fields" })
 
-        // find user
-        const userId = req.user?._id || ""
-
-        let user;
-        try {
-            user = await dataManager.findUser("_id", userId)
-        } catch (error) {
-            return res.status(500).json({ message: "Server error while finding user" })
+        // compare password
+        if (hashingManager.hashPassword(masterPassword) !== req.user.password) {
+            return res.status(400).json({ message: "incorrect password" })
         }
 
-        if (!user) return res.status(404).json({ message: "No user found" })
-
-        // check master password
-        if (user.password !== hashingManager.hashPassword(masterPassword)) {
-            return res.status(401).json({ message: "Invalid master password" })
-        }
-
-        // get vault
+        // // get vault
         let vault;
         try {
             vault = await dataManager.findUserVault("userId", req.user?._id)
@@ -36,12 +25,36 @@ class VaultManager {
 
         if (!vault) return res.status(404).json({ message: "Could not find vault for current user" })
 
-        console.log("vault", vault);
-        res.send("OK")
-        // encrypt vault
-        // const encryptionKey = hashingManager.createEncryptionKey(masterPassword)
-        // hashingManager.encryptData()
-        // update vault
+        // generate random id for password
+        const uid = uuidv4()
+        const cred = {
+            ...credentials,
+            uid
+        }
+
+        const encryptionKey = hashingManager.createEncryptionKey(masterPassword)
+        if (!vault.vault) {
+            const v = [cred]
+            const encryptedVault = hashingManager.encryptData(encryptionKey, JSON.stringify(v))
+            vault.vault = encryptedVault;
+        }
+        else {
+            const decryptedVault = hashingManager.decryptData(encryptionKey, vault.vault)
+            console.log(decryptedVault);
+
+            const decVault = JSON.parse(decryptedVault)
+            decVault.push(cred)
+            const encryptedVault = hashingManager.encryptData(encryptionKey, JSON.stringify(decVault))
+            vault.vault = encryptedVault;
+        }
+
+        try {
+            await vault.save()
+            return res.status(200).json({ message: "OK", cred })
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ message: "Server error while finding vault" })
+        }
     }
 
 }

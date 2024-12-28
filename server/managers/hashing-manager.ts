@@ -1,4 +1,5 @@
 import crypto from "crypto"
+import Cryptr from "cryptr";
 
 class HashingManager {
 
@@ -6,18 +7,20 @@ class HashingManager {
         return crypto.createHash("sha256").update(text).digest("hex")
     }
 
-    createEncryptionKey(password:string) {
-        return crypto.createHash("sha256").update(password).digest()
+    createEncryptionKey(password: string) {
+        return crypto.createHash("sha256").update(password).digest("hex")
     }
 
-    encryptData(data:any, key:string) {
-        const iv = crypto.randomBytes(16)
-        const cipher = crypto.createCipheriv("aes-256-gcm",key, data)
-        const encrypted = Buffer.concat([cipher.update(data, "utf-8"), cipher.final()])
-        return {
-            encryptedData: encrypted.toString("hex"),
-            iv: iv.toString("hex")
-        }
+    encryptData(key:string, data:string) {
+        const cryptr = new Cryptr(key)
+
+        return cryptr.encrypt(data)
+    }
+
+    decryptData(key:string, data:string) {
+        const cryptr = new Cryptr(key)
+
+        return cryptr.decrypt(data)
     }
 
 }

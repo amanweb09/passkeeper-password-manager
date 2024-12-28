@@ -9,7 +9,7 @@ const vaultSchema = new Schema({
     },
     vault: {
         type: String,
-        required: true
+        required: false
     },
     iv: {
         type: String,

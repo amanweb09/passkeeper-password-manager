@@ -23,14 +23,17 @@ export interface BaseJSXProps {
     children: ReactNode
 }
 
-export interface Credentials {
-    _id: string,
+export interface UnsavedCredential {
     domain: string,
     username: string,
     password: string,
 }
 
+export interface Credentials extends UnsavedCredential {
+    _id: string
+}
+
 export interface PasswordGeneration {
-    credentials: Credentials,
+    credentials: UnsavedCredential,
     masterPassword: string
 }

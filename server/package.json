@@ -21,9 +21,11 @@
   "dependencies": {
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
+    "cryptr": "^6.3.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.9.2"
+    "mongoose": "^8.9.2",
+    "uuid": "^11.0.3"
   }
 }

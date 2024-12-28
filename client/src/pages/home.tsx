@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Nav from '../components/nav'
 import PasswordCard from '../components/password-card'
-import { credentials } from '../dummy/credentials'
+// import { credentials } from '../dummy/credentials'
 import { Credentials } from '../types'
 import { FaEye, FaClipboard } from "react-icons/fa6"
 import CreatePassword from '../components/create-password'
@@ -11,6 +11,8 @@ const Home = () => {
 
   const [selectedCredential, setSelectedCredential] = useState<Credentials | null>(null)
   const [showPassword, setShowPassword] = useState(false)
+
+  const [credentials, setCredentials] = useState<Credentials[]>([])
 
   const copyPassword = () => {
     if (!selectedCredential) return;
@@ -27,6 +29,8 @@ const Home = () => {
           <h3 className='text-gray-600 font-bold text-lg'>Your Saved Passwords</h3>
           <div>
             {
+              credentials.length > 0
+              &&
               credentials.map(c => <PasswordCard
                 key={c._id}
                 setCurrentCredential={setSelectedCredential}
@@ -88,7 +92,7 @@ const Home = () => {
         </div>
 
         {/* add */}
-        <CreatePassword />
+        <CreatePassword cred={credentials} setCredentials={setCredentials}/>
       </div>
     </div>
   )
