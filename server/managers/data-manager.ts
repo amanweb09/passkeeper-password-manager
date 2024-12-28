@@ -1,6 +1,7 @@
 import { connect } from "mongoose"
 import User from "../models/user"
-import { User as BaseUser } from "../types"
+import { User as BaseUser } from "../types/index"
+import Vault from "../models/vault"
 
 class DataManager {
 
@@ -25,10 +26,18 @@ class DataManager {
         return await User.findOne({ email: value })
     }
 
-    async createUser(user:BaseUser) {
+    async createUser(user: BaseUser) {
         return await User.create(user)
     }
 
+    async initVault(userId: any) {
+        return await Vault.create({ userId, vault: "" })
+    }
+
+    async findUserVault(findBy: "vaultId" | "userId", id: any) {
+        if (findBy == "userId") return await Vault.findOne({ userId: id })
+        else return await Vault.findOne({ _id: id })
+    }
 }
 
 export default new DataManager()

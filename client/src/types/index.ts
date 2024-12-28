@@ -22,3 +22,15 @@ export interface AuthState {
 export interface BaseJSXProps {
     children: ReactNode
 }
+
+export interface Credentials {
+    _id: string,
+    domain: string,
+    username: string,
+    password: string,
+}
+
+export interface PasswordGeneration {
+    credentials: Credentials,
+    masterPassword: string
+}

@@ -34,6 +34,13 @@ export class AuthManager {
             return res.status(500).json({ message: "server error while creating user" })
         }
 
+        try {
+            await dataManager.initVault(user._id)
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ message: "server error while creating vault" })
+        }
+
         const token = AuthManager.generateToken({ _id: user._id })
 
         res.cookie("at", token)

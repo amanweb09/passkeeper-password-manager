@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BaseUser } from "../types";
+import { BaseUser, PasswordGeneration } from "../types";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL
 const api = axios.create({
@@ -9,5 +9,7 @@ const api = axios.create({
 
 export const signup = async (data: BaseUser) => await api.post("/api/signup", data)
 export const login = async (data:BaseUser) => await api.post("/api/signin", data)
+
+export const storePassword = async (data:PasswordGeneration) => await api.post("/api/store-password", data)
 
 export default api
