@@ -11,29 +11,37 @@ interface IPropTypes {
     credentials: UnsavedCredential,
     setCredentials: React.Dispatch<React.SetStateAction<Credentials[]>>,
     cred: Credentials[],
-    setInputDetails: React.Dispatch<React.SetStateAction<UnsavedCredential>>
+    setInputDetails: React.Dispatch<React.SetStateAction<UnsavedCredential>>,
+    loading: boolean,
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const MasterPasswordPopup: React.FC<IPropTypes> = ({ setShowPopup, setMasterPassword, masterPassword, credentials, setCredentials, cred, setInputDetails }) => {
+const MasterPasswordPopup: React.FC<IPropTypes> = ({ setShowPopup, setMasterPassword, masterPassword, credentials, setCredentials, cred, setInputDetails, loading, setLoading }) => {
 
     const handleSubmit = async () => {
         if (!masterPassword.length) return toast.error("Please enter your password")
 
         toast.warning("Adding your password")
         try {
+            setLoading(true)
             const { data } = await storePassword({ credentials, masterPassword })
             setMasterPassword("")
             setInputDetails({ domain: "", username: "", password: "" })
             setCredentials([...cred, data.cred])
             setShowPopup(false)
             toast.success("Wohoo! Password added")
-        } catch (error:any) {
+        } catch (error: any) {
             console.log(error);
             setMasterPassword("")
             setShowPopup(false)
             setInputDetails({ domain: "", username: "", password: "" })
             toast.error(error.response.data.message)
         }
+    }
+
+    const closePopup = () => {
+        setLoading(false) 
+        setShowPopup(false)
     }
 
     return (
@@ -61,12 +69,13 @@ const MasterPasswordPopup: React.FC<IPropTypes> = ({ setShowPopup, setMasterPass
                     </div>
 
                     <button
+                        disabled={loading}
                         onClick={handleSubmit}
                         className='py-2 mt-6 w-full rounded-md bg-sky-500 hover:bg-sky-600 text-white font-bold'>
                         Submit
                     </button>
                     <button
-                        onClick={() => setShowPopup(false)}
+                        onClick={closePopup}
                         className='py-1 mt-6 w-full rounded-md bg-red-50 hover:bg-red-100 text-red-500 font-bold'>
                         cancel
                     </button>

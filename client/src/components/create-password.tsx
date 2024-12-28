@@ -14,6 +14,7 @@ const CreatePassword: React.FC<IPropTypes> = ({ setCredentials, cred }) => {
 
     const [masterPassword, setMasterPassword] = useState<string>("")
     const [showPopup, setShowPopup] = useState(false)
+    const [loading, setLoading] = useState(false)
     const [creds, setCreds] = useState<UnsavedCredential>({
         domain: "",
         username: "",
@@ -34,6 +35,7 @@ const CreatePassword: React.FC<IPropTypes> = ({ setCredentials, cred }) => {
 
         if (!passed) return toast.error(message)
 
+        setLoading(true)
         setShowPopup(true)
     }
 
@@ -43,6 +45,8 @@ const CreatePassword: React.FC<IPropTypes> = ({ setCredentials, cred }) => {
                 showPopup
                 &&
                 <MasterPasswordPopup
+                    loading={loading}
+                    setLoading={setLoading}
                     setInputDetails={setCreds}
                     cred={cred}
                     setCredentials={setCredentials}
@@ -116,6 +120,7 @@ const CreatePassword: React.FC<IPropTypes> = ({ setCredentials, cred }) => {
                     </div>
 
                     <button
+                        disabled={loading}
                         onClick={popupMasterPassword}
                         className='py-4 mt-6 rounded-md bg-sky-500 hover:bg-sky-600 text-white font-bold'>
                         Submit
