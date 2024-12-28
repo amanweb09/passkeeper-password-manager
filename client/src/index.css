@@ -11,3 +11,12 @@
   align-items: center;
   justify-content: center;
 }
+.spin {
+  animation: spin 0.3s linear infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotateZ(360deg);
+  }
+}

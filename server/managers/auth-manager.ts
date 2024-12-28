@@ -74,6 +74,10 @@ export class AuthManager {
         return res.status(200).json({ message: "OK", user })
     }
 
+    reAuthenticate(req: Request, res: Response) {
+        return res.status(200).json({ message: "OK", user: req.user })
+    }
+
     async logout(req: Request, res: Response) {
         res.clearCookie("at")
         return res.status(200).json({ message: "OK" })

@@ -9,7 +9,9 @@ const api = axios.create({
 
 export const signup = async (data: BaseUser) => await api.post("/api/signup", data)
 export const login = async (data:BaseUser) => await api.post("/api/signin", data)
+export const reauth = async () => await api.get("/api/reauth")
 
+export const getPasswords = async () => await api.get("/api/get-passwords")
 export const storePassword = async (data:PasswordGeneration) => await api.post("/api/store-password", data)
 
 export default api

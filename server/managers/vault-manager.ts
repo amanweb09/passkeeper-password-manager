@@ -40,7 +40,6 @@ class VaultManager {
         }
         else {
             const decryptedVault = hashingManager.decryptData(encryptionKey, vault.vault)
-            console.log(decryptedVault);
 
             const decVault = JSON.parse(decryptedVault)
             decVault.push(cred)
@@ -57,6 +56,30 @@ class VaultManager {
         }
     }
 
+    async getPasswords(req: Request, res: Response) {
+        const userId = req.user._id
+        const masterPassword = req.body.masterPassword
+
+        let vault;
+        try {
+           vault = await dataManager.findUserVault("userId", userId)
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({message: "error while finding vault"})
+        }
+
+        if (!vault) return res.status(500).json({message: "no vault exists for this user"})
+
+        const key = hashingManager.createEncryptionKey(masterPassword)
+        const decryptedVault = hashingManager.decryptData(key, vault.vault || "")
+
+        if (!decryptedVault) res.status(500).json({message: "error while decrypting vault"})
+
+        return res.status(200).json({
+            message: "OK",
+            vault: JSON.parse(decryptedVault)
+        })
+    }
 }
 
 export default new VaultManager()
