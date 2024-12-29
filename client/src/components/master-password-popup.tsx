@@ -16,7 +16,7 @@ interface IPropTypes {
     setLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const MasterPasswordPopup: React.FC<IPropTypes> = ({ setShowPopup, setMasterPassword, masterPassword, credentials, setCredentials, cred, setInputDetails, loading, setLoading }) => {
+const MasterPasswordPopup: React.FC<IPropTypes> = ({ setShowPopup, setMasterPassword, masterPassword, credentials, setCredentials, cred, setInputDetails, setLoading }) => {
 
     const handleSubmit = async () => {
         if (!masterPassword.length) return toast.error("Please enter your password")
