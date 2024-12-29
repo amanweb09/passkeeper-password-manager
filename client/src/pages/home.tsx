@@ -1,16 +1,17 @@
 import { useState } from 'react'
 import Nav from '../components/nav'
 import PasswordCard from '../components/password-card'
-// import { credentials } from '../dummy/credentials'
 import { Credentials } from '../types'
 import { FaEye, FaClipboard } from "react-icons/fa6"
 import CreatePassword from '../components/create-password'
 import { toast } from 'react-toastify'
+import RevealPasswords from '../components/reveal-passwords'
 
 const Home = () => {
 
   const [selectedCredential, setSelectedCredential] = useState<Credentials | null>(null)
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState<boolean>(false)
+  const [revealPasswords, setRevealPasswords] = useState<boolean>(false)
 
   const [credentials, setCredentials] = useState<Credentials[]>([])
 
@@ -23,6 +24,11 @@ const Home = () => {
 
   return (
     <div className='container mx-auto'>
+      {
+        !revealPasswords
+        &&
+        <RevealPasswords setCredentials={setCredentials} setRevealPasswords={setRevealPasswords} />
+      }
       <Nav />
       <div className='mt-10 flex'>
         <div className="">
@@ -32,7 +38,7 @@ const Home = () => {
               credentials.length > 0
               &&
               credentials.map(c => <PasswordCard
-                key={c._id}
+                key={c.uid}
                 setCurrentCredential={setSelectedCredential}
                 credential={c} />)
             }
@@ -76,12 +82,12 @@ const Home = () => {
                       id="password" />
 
                     <div className='flex items-center'>
-                      <FaEye 
-                      onClick={() => setShowPassword(!showPassword)}
-                      className='text-gray-400 w-8 text-lg cursor-pointer' />
-                      <FaClipboard 
-                      onClick={copyPassword}
-                      className='text-gray-400 w-8 text-lg cursor-pointer' />
+                      <FaEye
+                        onClick={() => setShowPassword(!showPassword)}
+                        className='text-gray-400 w-8 text-lg cursor-pointer' />
+                      <FaClipboard
+                        onClick={copyPassword}
+                        className='text-gray-400 w-8 text-lg cursor-pointer' />
                     </div>
                   </div>
                 </div>
@@ -92,7 +98,7 @@ const Home = () => {
         </div>
 
         {/* add */}
-        <CreatePassword cred={credentials} setCredentials={setCredentials}/>
+        <CreatePassword cred={credentials} setCredentials={setCredentials} />
       </div>
     </div>
   )

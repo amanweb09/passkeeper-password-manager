@@ -30,7 +30,7 @@ export interface UnsavedCredential {
 }
 
 export interface Credentials extends UnsavedCredential {
-    _id: string
+    uid: string
 }
 
 export interface PasswordGeneration {

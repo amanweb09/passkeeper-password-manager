@@ -60,6 +60,10 @@ class VaultManager {
         const userId = req.user._id
         const masterPassword = req.body.masterPassword
 
+        if(hashingManager.hashPassword(masterPassword) !== req.user?.password) {
+            return res.status(400).json({message: "incorrect password"})
+        }
+
         let vault;
         try {
            vault = await dataManager.findUserVault("userId", userId)
