@@ -16,7 +16,8 @@ export interface User extends BaseUser {
 
 export interface AuthState {
     isAuth: boolean,
-    user: User | null
+    user: User | null,
+    masterPassword?: string
 }
 
 export interface BaseJSXProps {

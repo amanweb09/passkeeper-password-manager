@@ -3,6 +3,8 @@ import { CiLock } from 'react-icons/ci'
 import { Credentials } from '../types'
 import { toast } from 'react-toastify'
 import { getPasswords } from '../api'
+import { useDispatch } from 'react-redux'
+import { modifyMasterPassword } from '../store/auth-slice'
 
 interface IPropTypes {
     setCredentials: React.Dispatch<React.SetStateAction<Credentials[]>>,
@@ -10,16 +12,17 @@ interface IPropTypes {
 }
 
 const RevealPasswords: React.FC<IPropTypes> = ({ setCredentials, setRevealPasswords }) => {
-
+    const dispatch = useDispatch()
     const [masterPassword, setMasterPassword] = useState<string>("")
 
-    const fetchPasswords = async (e:React.MouseEvent<HTMLButtonElement>) => {
+    const fetchPasswords = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
 
         if (!masterPassword.length) return toast.error("Please enter your password")
 
         try {
             const { data } = await getPasswords(masterPassword)
+            dispatch(modifyMasterPassword({ masterPassword }))
             setCredentials(data.vault)
             setRevealPasswords(true)
         } catch (error: any) {

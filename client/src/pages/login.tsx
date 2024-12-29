@@ -2,7 +2,7 @@ import { useState } from "react"
 import Nav from "../components/nav"
 import { login } from "../api"
 import { useDispatch } from "react-redux"
-import { modifyUser } from "../store/auth-slice"
+import { modifyMasterPassword, modifyUser } from "../store/auth-slice"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 
@@ -30,9 +30,10 @@ const Login = () => {
         try {
             const { data } = await login(userDetails)
             dispatch(modifyUser({ isAuth: true, user: data.user }))
+            dispatch(modifyMasterPassword({ masterPassword: userDetails.password }))
             toast.success("Login successful!")
             return navigate("/")
-        } catch (error:any) {
+        } catch (error: any) {
             console.log(error);
             const MESSAGE = error.response.data.message || "Error while signing in"
             toast.error(MESSAGE)

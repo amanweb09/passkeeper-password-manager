@@ -6,6 +6,8 @@ import { FaEye, FaClipboard } from "react-icons/fa6"
 import CreatePassword from '../components/create-password'
 import { toast } from 'react-toastify'
 import RevealPasswords from '../components/reveal-passwords'
+import { useSelector } from 'react-redux'
+import { authSelector } from '../store/auth-slice'
 
 const Home = () => {
 
@@ -14,6 +16,8 @@ const Home = () => {
   const [revealPasswords, setRevealPasswords] = useState<boolean>(false)
 
   const [credentials, setCredentials] = useState<Credentials[]>([])
+
+  const { masterPassword } = useSelector(authSelector)
 
   const copyPassword = () => {
     if (!selectedCredential) return;
@@ -25,7 +29,7 @@ const Home = () => {
   return (
     <div className='container mx-auto'>
       {
-        !revealPasswords
+        !masterPassword
         &&
         <RevealPasswords setCredentials={setCredentials} setRevealPasswords={setRevealPasswords} />
       }
