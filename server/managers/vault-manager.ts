@@ -72,7 +72,12 @@ class VaultManager {
             return res.status(500).json({message: "error while finding vault"})
         }
 
-        if (!vault) return res.status(500).json({message: "no vault exists for this user"})
+        if (!vault) return res.status(404).json({message: "no vault exists for this user"})
+
+        if (vault.vault === "") return res.status(200).json({
+            message: "OK",
+            vault: []
+        })
 
         const key = hashingManager.createEncryptionKey(masterPassword)
         const decryptedVault = hashingManager.decryptData(key, vault.vault || "")

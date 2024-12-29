@@ -40,6 +40,7 @@ const MasterPasswordPopup: React.FC<IPropTypes> = ({ setShowPopup, setMasterPass
     }
 
     const closePopup = () => {
+        setMasterPassword("")
         setLoading(false) 
         setShowPopup(false)
     }
@@ -69,7 +70,7 @@ const MasterPasswordPopup: React.FC<IPropTypes> = ({ setShowPopup, setMasterPass
                     </div>
 
                     <button
-                        disabled={loading}
+                        // disabled={loading}
                         onClick={handleSubmit}
                         className='py-2 mt-6 w-full rounded-md bg-sky-500 hover:bg-sky-600 text-white font-bold'>
                         Submit

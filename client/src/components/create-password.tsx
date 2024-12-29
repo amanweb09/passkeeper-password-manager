@@ -77,6 +77,7 @@ const CreatePassword: React.FC<IPropTypes> = ({ setCredentials, cred }) => {
                                 className='px-4 py-2'
                                 placeholder='https://www.instagram.com'
                                 type="text" />
+                            <p className='italic text-sm text-gray-400 mt-2'>URL should begin with <span className='text-sky-500'>https://www.</span></p>
                         </div>
                     </div>
 
