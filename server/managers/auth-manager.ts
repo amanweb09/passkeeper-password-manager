@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken"
 
 export class AuthManager {
 
-    async signup(req: Request, res: Response) {
+    async signup(req: Request, res: Response):Promise<any> {
 
         const { name, email, password } = req.body
 
@@ -47,7 +47,7 @@ export class AuthManager {
         return res.status(201).json({ message: "OK", user })
     }
 
-    async signin(req: Request, res: Response) {
+    async signin(req: Request, res: Response):Promise<any>  {
         const { email, password } = req.body
 
         if (!email || !password) {
@@ -74,11 +74,11 @@ export class AuthManager {
         return res.status(200).json({ message: "OK", user })
     }
 
-    reAuthenticate(req: Request, res: Response) {
+    reAuthenticate(req: Request, res: Response):any {
         return res.status(200).json({ message: "OK", user: req.user })
     }
 
-    async logout(req: Request, res: Response) {
+    async logout(req: Request, res: Response):Promise<any>  {
         res.clearCookie("at")
         return res.status(200).json({ message: "OK" })
     }

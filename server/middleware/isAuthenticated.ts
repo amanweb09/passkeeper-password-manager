@@ -1,9 +1,9 @@
 import { type NextFunction, type Request, type Response } from "express"
 import { AuthManager } from "../managers/auth-manager"
 import dataManager from "../managers/data-manager"
-import { JWTPayload } from "../types"
+import { JWTPayload } from "../types/index"
 
-const isAuthenticated = async (req: Request, res: Response, next: NextFunction) => {
+const isAuthenticated = async (req: Request, res: Response, next: NextFunction):Promise<any>  => {
     const { at } = req.cookies
 
     if (!at) return res.status(401).json({ message: "unauthorised access" })

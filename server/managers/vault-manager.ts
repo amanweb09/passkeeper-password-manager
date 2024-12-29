@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid"
 
 class VaultManager {
 
-    async storePassword(req: Request, res: Response) {
+    async storePassword(req: Request, res: Response): Promise<any> {
         const { credentials, masterPassword } = req.body
 
         if (!credentials || !masterPassword) return res.status(400).json({ message: "Please provide all required fields" })
@@ -56,23 +56,23 @@ class VaultManager {
         }
     }
 
-    async getPasswords(req: Request, res: Response) {
+    async getPasswords(req: Request, res: Response): Promise<any> {
         const userId = req.user._id
         const masterPassword = req.body.masterPassword
 
-        if(hashingManager.hashPassword(masterPassword) !== req.user?.password) {
-            return res.status(400).json({message: "incorrect password"})
+        if (hashingManager.hashPassword(masterPassword) !== req.user?.password) {
+            return res.status(400).json({ message: "incorrect password" })
         }
 
         let vault;
         try {
-           vault = await dataManager.findUserVault("userId", userId)
+            vault = await dataManager.findUserVault("userId", userId)
         } catch (error) {
             console.log(error);
-            return res.status(500).json({message: "error while finding vault"})
+            return res.status(500).json({ message: "error while finding vault" })
         }
 
-        if (!vault) return res.status(404).json({message: "no vault exists for this user"})
+        if (!vault) return res.status(404).json({ message: "no vault exists for this user" })
 
         if (vault.vault === "") return res.status(200).json({
             message: "OK",
@@ -82,7 +82,7 @@ class VaultManager {
         const key = hashingManager.createEncryptionKey(masterPassword)
         const decryptedVault = hashingManager.decryptData(key, vault.vault || "")
 
-        if (!decryptedVault) res.status(500).json({message: "error while decrypting vault"})
+        if (!decryptedVault) res.status(500).json({ message: "error while decrypting vault" })
 
         return res.status(200).json({
             message: "OK",
