@@ -38,6 +38,7 @@ const Home = () => {
               credentials.length > 0
               &&
               credentials.map(c => <PasswordCard
+                selectedCredential={selectedCredential}
                 key={c.uid}
                 setCurrentCredential={setSelectedCredential}
                 credential={c} />)
