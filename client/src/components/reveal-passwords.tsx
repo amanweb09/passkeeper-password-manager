@@ -8,10 +8,9 @@ import { modifyMasterPassword } from '../store/auth-slice'
 
 interface IPropTypes {
     setCredentials: React.Dispatch<React.SetStateAction<Credentials[]>>,
-    setRevealPasswords: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const RevealPasswords: React.FC<IPropTypes> = ({ setCredentials, setRevealPasswords }) => {
+const RevealPasswords: React.FC<IPropTypes> = ({ setCredentials }) => {
     const dispatch = useDispatch()
     const [masterPassword, setMasterPassword] = useState<string>("")
 
@@ -24,7 +23,6 @@ const RevealPasswords: React.FC<IPropTypes> = ({ setCredentials, setRevealPasswo
             const { data } = await getPasswords(masterPassword)
             dispatch(modifyMasterPassword({ masterPassword }))
             setCredentials(data.vault)
-            setRevealPasswords(true)
         } catch (error: any) {
             toast.error(error.response.data.message || "Internal server error")
         }

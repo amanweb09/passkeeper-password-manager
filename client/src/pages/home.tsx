@@ -13,7 +13,6 @@ const Home = () => {
 
   const [selectedCredential, setSelectedCredential] = useState<Credentials | null>(null)
   const [showPassword, setShowPassword] = useState<boolean>(false)
-  const [revealPasswords, setRevealPasswords] = useState<boolean>(false)
 
   const [credentials, setCredentials] = useState<Credentials[]>([])
 
@@ -31,7 +30,7 @@ const Home = () => {
       {
         !masterPassword
         &&
-        <RevealPasswords setCredentials={setCredentials} setRevealPasswords={setRevealPasswords} />
+        <RevealPasswords setCredentials={setCredentials} />
       }
       <Nav />
       <div className='mt-10 flex'>
